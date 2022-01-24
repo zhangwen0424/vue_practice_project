@@ -1,0 +1,36 @@
+{
+  "data1": [
+    {
+      "id": "001",
+      "name": "Sherry",
+      "age": 24,
+      "friends": [
+        {
+          "id": "100",
+          "name": "friend1"
+        },
+        {
+          "id": "200",
+          "name": "friend2"
+        }
+      ]
+    },
+    {
+      "id": "002",
+      "name": "Addy",
+      "age": 26
+    }
+  ],
+  "data2": {
+    "id": "003",
+    "name": "Jack",
+    "age": 25
+  },
+  "data3": [
+    {
+      "id": "004",
+      "name": "Rebeca",
+      "age": 27
+    }
+  ]
+}
