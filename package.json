@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
+    "mock": "node_modules/.bin/json-server --watch mock/db.js --port 3000",
+    "mockdev": "npm run mock & npm run dev",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
@@ -16,6 +18,7 @@
     "fastclick": "^1.0.6",
     "mint-ui": "^2.2.13",
     "mock": "^0.1.1",
+    "mockjs": "^1.1.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.6.2"
