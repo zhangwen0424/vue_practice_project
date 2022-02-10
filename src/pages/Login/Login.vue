@@ -1,12 +1,12 @@
 <!--
- * @Date: 2021-12-01 16:31:13
+ * @Date: 2022-02-10 17:12:18
  * @LastEditors: zhangwen
- * @LastEditTime: 2021-12-01 16:31:13
- * @FilePath: /vue_demo/src/pages/Personal/index.vue
+ * @LastEditTime: 2022-02-10 17:12:18
+ * @FilePath: /vue_practice_project/src/pages/Login/Login.vue
 -->
 <template>
   <div>
-    Personal
+
   </div>
 </template>
 

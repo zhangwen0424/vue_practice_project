@@ -1,18 +1,18 @@
 <!--
- * @Date: 2021-12-01 16:26:35
+ * @Date: 2022-02-10 17:03:50
  * @LastEditors: zhangwen
- * @LastEditTime: 2021-12-01 16:26:35
- * @FilePath: /vue_demo/src/pages/TodoList/index.vue
+ * @LastEditTime: 2022-02-10 17:03:50
+ * @FilePath: /vue_practice_project/src/components/ShopList/ShopList.vue
 -->
 <template>
   <div>
-    TodoList
+
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TodoList',
+  name: '',
   data () {
     return {
       msg: ''

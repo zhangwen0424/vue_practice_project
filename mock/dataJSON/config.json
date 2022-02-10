@@ -1,0 +1,6 @@
+{
+  "test": {
+    "url":"/test",
+    "path": "./test/test.json"
+  }
+}

@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-01-27 17:58:06
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-01-27 18:08:44
+ * @LastEditTime: 2022-02-10 14:37:29
  * @FilePath: /vue_practice_project/mock/db.js
  */
 const Mock = require("mockjs");
@@ -9,9 +9,15 @@ const Mock = require("mockjs");
 // const user = require("user");
 
 const demo = Mock.mock({
-  name: "mornki",
-  "age|18-25": 22,
-  sex: "girl"
+  "array|10": [{
+    id: "@id",
+    name: "@cname",
+    "age|18-25": 22,
+    url: "@url",
+    sex: "girl",
+    birthday:"@date('yyyy-mm-dd')",
+    "sort|+1":1, 
+  }]
 });
 
 module.exports = function() {

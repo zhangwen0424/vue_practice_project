@@ -1,26 +1,28 @@
 <template>
   <div id="app">
     <!-- 头部 -->
-    <mt-header fixed key="" :title="$route.meta.title">
+    <!-- <mt-header fixed key="" :title="$route.meta.title">
       <router-link to="/" slot="left">
         <mt-button icon="back">返回</mt-button>
         <mt-button @click="handleClose">关闭</mt-button>
       </router-link>
       <mt-button icon="more" slot="right"></mt-button>
-    </mt-header>
+    </mt-header> -->
     <!-- 内容 -->
-    <router-view/>
+    <!-- <router-view/> -->
     <!-- 底部 -->
-    <TabBar :tabs="tabs"/>
+    <!-- <TabBar :tabs="tabs"/> -->
+    <router-view></router-view>
+    <FooterGuide v-show="$route"></FooterGuide>
   </div>
 </template>
 
 <script>
-import TabBar from '@/components/TabBar'
+import FooterGuide from './components/FooterGuide/FooterGuide.vue'
 export default {
   name: 'App',
   components: {
-    TabBar,
+    FooterGuide,
   }
 }
 </script>
