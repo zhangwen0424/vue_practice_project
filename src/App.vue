@@ -11,9 +11,8 @@
     <!-- 内容 -->
     <!-- <router-view/> -->
     <!-- 底部 -->
-    <!-- <TabBar :tabs="tabs"/> -->
     <router-view></router-view>
-    <FooterGuide v-show="$route"></FooterGuide>
+    <FooterGuide keep-alive></FooterGuide>
   </div>
 </template>
 
