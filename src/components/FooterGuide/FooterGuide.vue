@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-10 16:57:36
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-14 18:22:24
+ * @LastEditTime: 2022-02-15 11:06:57
  * @FilePath: /vue_practice_project/src/components/FooterGuide/FooterGuide.vue
 -->
 <template>
@@ -50,14 +50,8 @@ export default {
     /**
      * 页签切换时，切换路由地址
      */
-    // activedId(value){
-    //   this.changeUrl('/'+value);
-    // },
-    activedId: {
-      handler(value) {
-          this.changeUrl("/" + value);
-      },
-      immediate: true
+    activedId(value){
+      this.changeUrl('/'+value);
     },
     /**
      * 路由切换时更新页签
@@ -75,7 +69,6 @@ export default {
       let index = this.$data.tabbars.find(tab => {
         return "/" + tab.id == this.$route.path;
       });
-      // console.log("getPath",index.id)
       return index ? index.id : "";
     },
     // 切换路由
@@ -83,12 +76,13 @@ export default {
       // console.log("changeUrl",path);
       console.log(this.$router);
       // debugger;
-      this.$router.push({ path: path });
+      if(this.$route.path != path) {
+        this.$router.push({ path: path });
+      }
     }
   },
   mounted() {
-    // console.log(this.$data);
-    // this.$data.activedId = this.getPath() || 'home';
+    this.$data.activedId = this.getPath() || 'home';
   }
 };
 </script>
