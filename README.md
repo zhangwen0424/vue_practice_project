@@ -9,10 +9,29 @@
 ### 使用 mint-ui 首页加载样式闪烁
 
 描述：刷新页面会展现 1s 样式乱掉的页面
-原因： 项目中使用@import `@import "https://unpkg.com/mint-ui/lib/style.css"` 引入 mint-ui 样式，样式表style.css晚于 app.js 加载，出现样式渲染问题。
-解决方案：在 main.js中引入样式，会将样式文件前置，文件加载就应用样式文件。`import Mint from 'mint-ui'; import "mint-ui/lib/style.css"`
+原因： 项目中使用@import `@import "https://unpkg.com/mint-ui/lib/style.css"` 引入 mint-ui 样式，样式表 style.css 晚于 app.js 加载，出现样式渲染问题。
+解决方案：在 main.js 中引入样式，会将样式文件前置，文件加载就应用样式文件。`import Mint from 'mint-ui'; import "mint-ui/lib/style.css"`
+
+### 引入 nutui 后主题定制配置报错
+
+描述： @vue/cli 4+版本创建的项目中，进行 nutui 主题颜色定制化提示scss 文件未找到。main.js 中引入 scss 文件均报错。
+原因：scss-loader 版本太高。
+解决方案：
+package.json 中加入下面代码后 cnpm i
+
+```js
+    "node-sass": "^4.14.1",
+    "sass-loader": "^7.3.1",
+```
 
 ## 项目启动
+
+@vue/cli 脚手架工具
+npm uninstall -g vue-cli 卸载旧版本 vue-cli 2 版本
+npm i -g @vue/cli 使用 新版本
+npm i -g @vue/cli-init 配置连接桥使用 vue-cli 2 版本的命令
+vue -V 查看脚手架工具版本号
+vue create vue_demo 快速创建 vue 项目
 
 ```bash
 # install dependencies
@@ -183,25 +202,38 @@ $router: 路由器对象, 包含一些操作路由的功能函数, 来实现编�
 
 #### UI 组件引入
 
-UI 组件
+移动端 UI 组件库
 
-- css component
+- mintui 组件少，功能少，滑动不灵敏
+- mutui 京东风格 ui，支持 vue2,vue3,小程序
+
+移动端 UI 组件
+
+- 导航组件
   - Header 顶部导航栏
   - Tabbar 底部标签栏
+  - Navbar 导航选项卡
 
 ### 标签页切换和选中功能（FooterGuide）
 
 ```js
-<mt-tabbar v-model="selected" fixed>
-data() {
-  return {
-    selected: this.$route.path.replace('/','') || "home"
-  };
-},
+<mt-tabbar v-model="activedId" fixed>
 watch: {
-  selected(){
-    this.$router.replace('/'+this.$data.selected);
-  }
+    /**
+     * 页签切换时，切换路由地址
+     */
+    activedId(value){
+      this.changeUrl('/'+value);
+    },
+    /**
+     * 路由切换时更新页签
+     */
+    $route(to, from) {
+      let path = this.getPath(to.path);
+      if (path) {
+        this.$data.activedId = path;
+      }
+    }
 }
 ```
 
@@ -210,13 +242,11 @@ watch: {
 slot 插槽
 
 ```vue
-  <!-- 放置插槽 -->
-     <slot name="left"></slot>
-  <!-- 使用插槽 -->
-    <template slot="left"></template>
-    <template v-slot:left></template>
+<!-- 放置插槽 -->
+<slot name="left"></slot>
+<!-- 使用插槽 -->
+<template slot="left"></template>
+<template v-slot:left></template>
 ```
-
-Vuex 组件间通信
 
 ### 登陆路由组件功能
