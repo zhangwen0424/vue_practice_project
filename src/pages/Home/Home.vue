@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-10 16:53:19
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-14 13:06:36
+ * @LastEditTime: 2022-02-15 10:44:42
  * @FilePath: /vue_practice_project/src/pages/Home/Home.vue
 -->
 <template>
@@ -17,7 +17,9 @@
           登陆
         </router-link>
         |
-        <span>注册</span>
+        <router-link to="/register">
+          注册
+        </router-link>
       </template>
     </HeaderTop>
   </div>

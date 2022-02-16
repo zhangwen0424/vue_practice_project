@@ -4,7 +4,7 @@ import Vue from "vue";
 // Vue.use(Mint)
 // mint-ui组件按需加载
 import "mint-ui/lib/style.css";
-import { Header, Navbar, Tabbar,TabItem } from "mint-ui";
+import { Header, Navbar, Tabbar, TabItem } from "mint-ui";
 Vue.component(Header.name, Header);
 Vue.component(Navbar.name, Navbar);
 Vue.component(Tabbar.name, Tabbar);
