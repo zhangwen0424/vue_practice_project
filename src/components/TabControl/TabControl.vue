@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-16 14:06:31
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-16 17:38:10
+ * @LastEditTime: 2022-02-17 13:27:36
  * @FilePath: /vue_practice_project/src/components/TabControl/TabControl.vue
 -->
 <template>
@@ -43,14 +43,12 @@ export default {
       }
     },
     // 选项回调
-    "tab-switch": {
-      type: Function,
-      default: this.changeTab
-    }
+    tabSwitch: Function
   },
   methods: {
     changTab(v) {
       this.$data.activedId = v.id;
+      this.tabSwitch(v);
     }
   },
   mounted() {
@@ -64,6 +62,7 @@ export default {
 <style scoped lang="scss">
 .TabControl {
   text-align: center;
+  margin-bottom: 10px;
   .tab-default {
     display: inline-block;
     margin: 0px 10px;

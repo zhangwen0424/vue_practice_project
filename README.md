@@ -14,7 +14,7 @@
 
 ### 引入 nutui 后主题定制配置报错
 
-描述： @vue/cli 4+版本创建的项目中，进行 nutui 主题颜色定制化提示scss 文件未找到。main.js 中引入 scss 文件均报错。
+描述： @vue/cli 4+版本创建的项目中，进行 nutui 主题颜色定制化提示 scss 文件未找到。main.js 中引入 scss 文件均报错。
 原因：scss-loader 版本太高。
 解决方案：
 package.json 中加入下面代码后 cnpm i
@@ -209,10 +209,21 @@ $router: 路由器对象, 包含一些操作路由的功能函数, 来实现编�
 
 移动端 UI 组件
 
+- 布局组件
+
+  - Row 行
+  - Col 列
+
 - 导航组件
+
   - Header 顶部导航栏
   - Tabbar 底部标签栏
   - Navbar 导航选项卡
+
+- 操作反馈组件
+
+  - Notify 消息提示
+  - Dialog 对话框
 
 ### 标签页切换和选中功能（FooterGuide）
 
@@ -250,3 +261,12 @@ slot 插槽
 ```
 
 ### 登陆路由组件功能
+
+前端请求类型
+
+- multipart/form-data 处理表单，可上传文件或者键值对，因有键值对可以多文件上传
+- application/x-www-from-urlencode 将表单数据转为键值对，name=mornki&age=20
+- raw 可上传任意格式文本，text、json、xml、html 等文本格式
+- binary 等同于 Content-Type:application/octet-stream 只可上传二进制数据，通常用来上传文件，因无键值一次只能上传一个文件
+
+xhr 请求后端接口
