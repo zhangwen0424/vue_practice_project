@@ -1,12 +1,12 @@
 <!--
  * @Date: 2022-02-10 17:12:18
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-18 14:53:45
+ * @LastEditTime: 2022-02-18 18:09:52
  * @FilePath: /vue_practice_project/src/pages/Login/Login.vue
 -->
 <template>
   <div class="login-container">
-    <nut-navbar :rightShow="false" @on-click-back="$router.replace('/')">
+    <nut-navbar :rightShow="false" @on-click-back="$router.back()">
       <span></span>
     </nut-navbar>
 
@@ -164,8 +164,10 @@ export default {
             this.$router.replace({
               path: "/" + (this.activedId == "login" ? "" : "login")
             });
-            this.$data.activedId = this.activedId;
-          }, 3000);
+            this.activedId == "register"
+              ? (this.$data.activedId = "login")
+              : "";
+          }, 2500);
         } else {
           Object.assign(notify, {
             notifyType: "warning",

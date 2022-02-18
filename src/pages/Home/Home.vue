@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-10 16:53:19
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-15 10:44:42
+ * @LastEditTime: 2022-02-18 17:28:05
  * @FilePath: /vue_practice_project/src/pages/Home/Home.vue
 -->
 <template>
@@ -13,11 +13,12 @@
         </router-link>
       </template>
       <template v-slot:right>
-        <router-link to="/login">
+        <router-link to="/login" v-if="!loginUser">
           登陆
         </router-link>
-        |
-        <router-link to="/register">
+        <router-link to="/profile" v-else> 您好！{{ loginUser }} </router-link>
+        <span v-if="!loginUser">|</span>
+        <router-link to="/register" v-if="!loginUser">
           注册
         </router-link>
       </template>
@@ -31,12 +32,29 @@ export default {
   name: "Home",
   data() {
     return {
-      msg: ""
+      loginUser: this.$route.meta.loginUser || ""
     };
   },
+  computed: {
+    // loginUser() {
+    //   debugger;
+    //   return this.$route.meta.loginUser || "";
+    // }
+  },
   components: { HeaderTop },
+  computed: {},
   methods: {},
-  mounted() {}
+  mounted() {
+    // this.loginUser = this.$route.meta.loginUser || "";
+    // let user = localStorage.getItem("loginUser");
+    // let time = localStorage.getItem("loginTime");
+    // let now = new Date().valueOf();
+    // if (!user || now - time > 10 * 1000) {
+    //   this.loginUser = user;
+    // } else {
+    //   this.loginUser = "";
+    // }
+  }
 };
 </script>
 
