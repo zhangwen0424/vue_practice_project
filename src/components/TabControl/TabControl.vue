@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-16 14:06:31
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-17 13:27:36
+ * @LastEditTime: 2022-02-18 13:49:45
  * @FilePath: /vue_practice_project/src/components/TabControl/TabControl.vue
 -->
 <template>
@@ -29,9 +29,14 @@ export default {
       activedId: ""
     };
   },
+  watch: {
+    value(value) {
+      this.activedId = value;
+    }
+  },
   props: {
-    //  默认激活项
-    defaultValue: String,
+    //  激活项
+    value: String,
     // 选项
     tabs: {
       type: Array,
@@ -52,9 +57,7 @@ export default {
     }
   },
   mounted() {
-    this.$data.activedId = this.defaultValue
-      ? this.defaultValue
-      : this.tabs[0].id;
+    this.$data.activedId = this.value ? this.value : this.tabs[0].id;
   }
 };
 </script>

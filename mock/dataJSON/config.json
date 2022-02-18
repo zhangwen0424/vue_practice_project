@@ -1,6 +1,10 @@
 {
   "test": {
-    "url":"/test",
+    "url": "/test",
     "path": "./test/test.json"
+  },
+  "user": {
+    "url": "/list",
+    "path": "./user/list.json"
   }
 }

@@ -1,11 +1,12 @@
 /*
  * @Date: 2022-02-17 14:39:22
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-17 15:57:58
- * @FilePath: /vue_practice_project/src/api/axios.js
+ * @LastEditTime: 2022-02-18 14:02:54
+ * @FilePath: /vue_practice_project/src/api/xhr/axios.js
  */
 
 import axios from "axios";
+import { Toast } from "@nutui/nutui";
 
 const baseURL = "http://localhost:3000";
 
@@ -28,6 +29,7 @@ commonInstance.interceptors.request.use(
   err => {
     // 对请求错误做些什么
     console.log(error);
+
     return Promise.reject(error);
   }
 );
@@ -43,9 +45,10 @@ commonInstance.interceptors.response.use(
     console.log("");
   },
   error => {
-    console.log("错误");
-    Promise.reject(error);
+    console.log("错误", error);
+    Toast.fail("操作失败！");
+    return Promise.reject(error);
   }
 );
 
-export default commonInstance;
+export { commonInstance };

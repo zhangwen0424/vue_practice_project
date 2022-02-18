@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-10 17:12:18
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-17 18:19:44
+ * @LastEditTime: 2022-02-18 14:53:45
  * @FilePath: /vue_practice_project/src/pages/Login/Login.vue
 -->
 <template>
@@ -9,6 +9,7 @@
     <nut-navbar :rightShow="false" @on-click-back="$router.replace('/')">
       <span></span>
     </nut-navbar>
+
     <nut-row type="flex" justify="center">
       <nut-col :span="12">
         <div class="flex-content">
@@ -22,7 +23,7 @@
       <nut-col :span="24">
         <TabControl
           :tabs="tabs"
-          :defaultValue="$route.path.replace('/', '')"
+          :value="$route.path.replace('/', '')"
           :tabSwitch="tabSwitch"
         ></TabControl>
       </nut-col>
@@ -121,6 +122,9 @@ export default {
     tabSwitch(index) {
       // console.log("index", index);
       this.activedId = index.id;
+      if (this.$route.path != "/" + index.id) {
+        this.$router.push("/" + index.id);
+      }
     },
     // 验证登陆注册
     checkClick() {
@@ -128,7 +132,7 @@ export default {
         if (!this.form.account) {
           resolve("请输入账号！");
         }
-        if (!this.from.password) {
+        if (!this.form.password) {
           resolve("请输入密码！");
         }
         if (this.activedId == "register") {
@@ -149,23 +153,67 @@ export default {
         notifyShow: true
       };
       if (!check) {
-        let res = await $http[this.activedId](this.form);
-        console.log("res", res);
-        Object.assign(notify, {
-          notifyType: "warning",
-          notifyMsg: this.activedTitle + "成功"
-        });
+        let res = await this[this.activedId](this.form);
+        if (!res) {
+          Object.assign(notify, {
+            notifyType: "success",
+            notifyMsg: this.activedTitle + "成功!"
+          });
+          this.$store.commit("Common/SHOWNOTIFY", notify);
+          setTimeout(() => {
+            this.$router.replace({
+              path: "/" + (this.activedId == "login" ? "" : "login")
+            });
+            this.$data.activedId = this.activedId;
+          }, 3000);
+        } else {
+          Object.assign(notify, {
+            notifyType: "warning",
+            notifyMsg: res
+          });
+          this.$store.commit("Common/SHOWNOTIFY", notify);
+        }
       } else {
         Object.assign(notify, {
           notifyType: "warning",
           notifyMsg: check
         });
+        this.$store.commit("Common/SHOWNOTIFY", notify);
       }
-      this.$store.commit("Common/SHOWNOTIFY", notify);
+    },
+    // 注册
+    register(data) {
+      return new Promise((resolve, reject) => {
+        localStorage.setItem(
+          data.account,
+          JSON.stringify({
+            password: data.password,
+            registerTime: new Date().valueOf()
+          })
+        );
+        resolve();
+      });
+    },
+    // 登陆
+    login(data) {
+      return new Promise((resolve, reject) => {
+        let user = localStorage.getItem(data.account);
+        if (user) {
+          user = JSON.parse(user);
+          if (user.password != data.password) {
+            resolve("密码输入错误！");
+          } else {
+            localStorage.setItem("loginUser", data.account);
+            localStorage.setItem("loginTime", new Date().valueOf());
+            resolve();
+          }
+        } else {
+          resolve("用户未注册！");
+        }
+      });
     }
   },
   mounted() {
-    console.log(this);
     this.$data.activedId =
       this.$route.path.indexOf("login") != -1 ? "login" : "register";
   }

@@ -9,7 +9,6 @@
     "start": "npm run dev",
     "mockServer": "nodemon ./mock/mockServer.js",
     "mock": "node_modules/.bin/json-server --watch mock/db.js --port 3000",
-    "mockdev": "npm run mock & npm run dev",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
