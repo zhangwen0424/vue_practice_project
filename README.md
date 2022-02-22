@@ -262,11 +262,60 @@ slot 插槽
 
 ### 登陆路由组件功能
 
-前端请求类型
+**前端请求类型**
 
 - multipart/form-data 处理表单，可上传文件或者键值对，因有键值对可以多文件上传
 - application/x-www-from-urlencode 将表单数据转为键值对，name=mornki&age=20
 - raw 可上传任意格式文本，text、json、xml、html 等文本格式
 - binary 等同于 Content-Type:application/octet-stream 只可上传二进制数据，通常用来上传文件，因无键值一次只能上传一个文件
+
+**input 自动聚焦**
+放在 mounted 时，切换 tab 时无法自动聚焦。放在 beforeRouteEnter 中
+
+```js
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      let $this = vm;
+      $this.$refs.myInput.focus();
+    });
+```
+
+**vuex 数据持久化**
+Vuex 解决了多视图之间的数据共享问题。但是运用过程中又带来了一个新的问题是，Vuex 的状态存储并不能持久化。也就是说当你存储在 Vuex 中的 store 里的数据，只要一刷新页面，数据就丢失了。
+
+引入 vuex-persist 插件，它就是为 Vuex 持久化存储而生的一个插件。不需要你手动存取 storage ，而是直接将状态保存至 cookie 或者 localStorage 中
+
+```js
+import Vuex from "vuex";
+import VuexPersist from "vuex-persist";
+import notify from "./modules/notify";
+import user from "./modules/user";
+
+// vuex 数据持久化
+const vuexUser = new VuexPersist({
+  key: "vuexUser", // string, 将状态存储在存储中的键。默认: 'vuex'
+  storage: window.localStorage, //可传localStorage, sessionStorage, localforage 或者你自定义的存储对象. 接口必须要有get和set.  默认是: window.localStorage
+  modules: ["user"] //string[], 要持久化的模块列表。
+});
+
+export default new Vuex.Store({
+  modules: {
+    notify, // 顶部提示栏
+    user // 登陆用户
+    // FooterGuide, //底部标签页
+    // Common //公共状态
+  },
+  plugins: [vuexUser.plugin]
+});
+```
+
+**vue-router 中获取 store 中的数据**
+
+```js
+import store from "../store";
+router.beforeEach((to, from, next) => {
+  console.log("store", store);
+});
+```
 
 xhr 请求后端接口

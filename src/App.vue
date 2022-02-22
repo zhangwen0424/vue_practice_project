@@ -28,7 +28,7 @@ export default {
     FooterGuide
   },
   computed: {
-    ...mapState("Common", ["notifyShow", "notifyType", "notifyMsg"])
+    ...mapState("notify", ["notifyShow", "notifyType", "notifyMsg"])
   }
 };
 </script>

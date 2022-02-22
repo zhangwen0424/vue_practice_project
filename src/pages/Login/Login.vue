@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-10 17:12:18
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-18 18:09:52
+ * @LastEditTime: 2022-02-22 16:40:22
  * @FilePath: /vue_practice_project/src/pages/Login/Login.vue
 -->
 <template>
@@ -31,10 +31,11 @@
 
     <form action="">
       <nut-row type="flex" justify="center">
-        <nut-col :span="20">
+        <nut-col :span="20" class="autoFucus">
           <nut-textinput
             placeholder="手机/邮箱/用户名"
             v-model="form.account"
+            ref="myInput"
           ></nut-textinput>
         </nut-col>
       </nut-row>
@@ -74,7 +75,7 @@
 
       <nut-row type="flex" justify="center">
         <nut-col :span="20">
-          <nut-button block type="primary" @click="handleClick">{{
+          <nut-button block type="primary" @click.prevent="handleClick">{{
             activedTitle
           }}</nut-button>
         </nut-col>
@@ -87,7 +88,7 @@
 import HeaderTop from "@/components/HeaderTop/HeaderTop";
 import TabControl from "@/components/TabControl/TabControl";
 import * as $http from "@/api/login";
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "Login",
   components: { HeaderTop, TabControl },
@@ -114,10 +115,12 @@ export default {
   computed: {
     activedTitle() {
       return this.activedId == "login" ? "登陆" : "注册";
-    }
+    },
+    ...mapState("user", ["userList"])
   },
   methods: {
-    ...mapMutations(["SHOWNOTIFY"]),
+    ...mapMutations("notify", ["SHOWNOTIFY"]),
+    ...mapMutations("user", ["REGISTER", "LOGIN"]),
     // 选项栏切换
     tabSwitch(index) {
       // console.log("index", index);
@@ -153,13 +156,14 @@ export default {
         notifyShow: true
       };
       if (!check) {
-        let res = await this[this.activedId](this.form);
+        let res = await this[this.activedId]();
         if (!res) {
           Object.assign(notify, {
             notifyType: "success",
             notifyMsg: this.activedTitle + "成功!"
           });
-          this.$store.commit("Common/SHOWNOTIFY", notify);
+          this.SHOWNOTIFY(notify);
+          // this.$store.commit("Common/SHOWNOTIFY", notify);
           setTimeout(() => {
             this.$router.replace({
               path: "/" + (this.activedId == "login" ? "" : "login")
@@ -173,40 +177,44 @@ export default {
             notifyType: "warning",
             notifyMsg: res
           });
-          this.$store.commit("Common/SHOWNOTIFY", notify);
+          this.SHOWNOTIFY(notify);
+          // this.$store.commit("Common/SHOWNOTIFY", notify);
         }
       } else {
         Object.assign(notify, {
           notifyType: "warning",
           notifyMsg: check
         });
-        this.$store.commit("Common/SHOWNOTIFY", notify);
+        this.SHOWNOTIFY(notify);
       }
     },
     // 注册
-    register(data) {
+    register() {
       return new Promise((resolve, reject) => {
-        localStorage.setItem(
-          data.account,
-          JSON.stringify({
-            password: data.password,
-            registerTime: new Date().valueOf()
-          })
-        );
+        // localStorage.setItem(
+        //   data.account,
+        //   JSON.stringify({
+        //     password: data.password,
+        //     registerTime: new Date().valueOf()
+        //   })
+        // );
+        this.REGISTER(Object.assign({}, this.form));
         resolve();
       });
     },
     // 登陆
-    login(data) {
+    login() {
       return new Promise((resolve, reject) => {
-        let user = localStorage.getItem(data.account);
+        // let user = localStorage.getItem(data.account);
+        let user = this.userList[this.form.account];
         if (user) {
-          user = JSON.parse(user);
-          if (user.password != data.password) {
+          // user = JSON.parse(user);
+          if (user.password != this.form.password) {
             resolve("密码输入错误！");
           } else {
-            localStorage.setItem("loginUser", data.account);
-            localStorage.setItem("loginTime", new Date().valueOf());
+            this.LOGIN(this.form);
+            // localStorage.setItem("loginUser", data.account);
+            // localStorage.setItem("loginTime", new Date().valueOf());
             resolve();
           }
         } else {
@@ -216,8 +224,19 @@ export default {
     }
   },
   mounted() {
-    this.$data.activedId =
-      this.$route.path.indexOf("login") != -1 ? "login" : "register";
+    // console.log(this);
+    // this.activedId =
+    // this.$route.path.indexOf("login") != -1 ? "login" : "register";
+    // console.log(this.$refs);
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      let $this = vm;
+      $this.$refs.myInput.focus();
+      $this.activedId =
+        $this.$route.path.indexOf("login") != -1 ? "login" : "register";
+      // console.log("beforeRouteEnter login", $this.$route.path.indexOf("login"));
+    });
   }
 };
 </script>

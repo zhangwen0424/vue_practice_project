@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-10 16:53:19
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-18 17:28:05
+ * @LastEditTime: 2022-02-22 16:51:33
  * @FilePath: /vue_practice_project/src/pages/Home/Home.vue
 -->
 <template>
@@ -27,24 +27,24 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import HeaderTop from "../../components/HeaderTop/HeaderTop.vue";
+// import·
 export default {
   name: "Home",
   data() {
     return {
-      loginUser: this.$route.meta.loginUser || ""
+      // loginUser: ""
+      // loginUser: this.$route.meta.loginUser || ""
     };
   },
   computed: {
-    // loginUser() {
-    //   debugger;
-    //   return this.$route.meta.loginUser || "";
-    // }
+    ...mapState("user", ["loginUser"])
   },
   components: { HeaderTop },
-  computed: {},
   methods: {},
   mounted() {
+    // console.log(this);
     // this.loginUser = this.$route.meta.loginUser || "";
     // let user = localStorage.getItem("loginUser");
     // let time = localStorage.getItem("loginTime");
