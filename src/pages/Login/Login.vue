@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-10 17:12:18
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-22 16:40:22
+ * @LastEditTime: 2022-02-24 14:31:14
  * @FilePath: /vue_practice_project/src/pages/Login/Login.vue
 -->
 <template>
@@ -87,8 +87,9 @@
 <script>
 import HeaderTop from "@/components/HeaderTop/HeaderTop";
 import TabControl from "@/components/TabControl/TabControl";
-import * as $http from "@/api/login";
-import { mapMutations, mapState } from "vuex";
+// import * as $http from "@/api/login";
+import { $login } from "@/api";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "Login",
   components: { HeaderTop, TabControl },
@@ -120,6 +121,7 @@ export default {
   },
   methods: {
     ...mapMutations("notify", ["SHOWNOTIFY"]),
+    ...mapActions("user", ["a_register"]),
     ...mapMutations("user", ["REGISTER", "LOGIN"]),
     // 选项栏切换
     tabSwitch(index) {
@@ -190,16 +192,12 @@ export default {
     },
     // 注册
     register() {
-      return new Promise((resolve, reject) => {
-        // localStorage.setItem(
-        //   data.account,
-        //   JSON.stringify({
-        //     password: data.password,
-        //     registerTime: new Date().valueOf()
-        //   })
-        // );
-        this.REGISTER(Object.assign({}, this.form));
-        resolve();
+      return new Promise(async (resolve, reject) => {
+        // debugger;
+        // let result = $login.reqRegister(this.form);
+        await this.a_register(this.form);
+        // this.REGISTER(Object.assign({}, this.form));
+        // resolve();
       });
     },
     // 登陆
@@ -228,6 +226,7 @@ export default {
     // this.activedId =
     // this.$route.path.indexOf("login") != -1 ? "login" : "register";
     // console.log(this.$refs);
+    // console.log("http", api);
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

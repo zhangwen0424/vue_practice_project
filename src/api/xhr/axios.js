@@ -1,23 +1,29 @@
 /*
  * @Date: 2022-02-17 14:39:22
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-18 14:02:54
+ * @LastEditTime: 2022-02-24 17:36:37
  * @FilePath: /vue_practice_project/src/api/xhr/axios.js
  */
 
 import axios from "axios";
+import qs from "qs";
 import { Toast } from "@nutui/nutui";
 
-const baseURL = "http://localhost:3000";
+// axios post 请求后端 body 中接收不到数据
+axios.defaults.headers.post["Content-Type"] =
+  "application/x-www-form-urlencoded;charset=UTF-8";
+// axios.defaults.withCredentials = true;
+
+const baseURL = "/api";
 
 // 创建 axios 实例，方便统一管理
-const commonInstance = axios.create({
+const xhr = axios.create({
   baseURL: baseURL,
   timeout: 10000
 });
 
 // 请求拦截器
-commonInstance.interceptors.request.use(
+xhr.interceptors.request.use(
   config => {
     // 在发送请求之前做些什么（可以在这里给头部添加token）
     // console.log("axios请求拦截器的config：",config);
@@ -28,14 +34,14 @@ commonInstance.interceptors.request.use(
   },
   err => {
     // 对请求错误做些什么
-    console.log(error);
+    console.log("请求错误:", error);
 
     return Promise.reject(error);
   }
 );
 
 // 响应拦截器
-commonInstance.interceptors.response.use(
+xhr.interceptors.response.use(
   response => {
     /**
      * 对响应数据判断:
@@ -43,12 +49,13 @@ commonInstance.interceptors.response.use(
      *  如果请求不成功，就在拦截器这里统一处理（组件的代码就不用关注错误的情况了）
      */
     console.log("");
+    return response;
   },
   error => {
-    console.log("错误", error);
+    console.log("响应错误:", error);
     Toast.fail("操作失败！");
     return Promise.reject(error);
   }
 );
 
-export { commonInstance };
+export { xhr };

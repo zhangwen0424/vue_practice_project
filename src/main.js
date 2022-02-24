@@ -7,8 +7,11 @@ import fastclick from "fastclick";
 
 // 引入 Vuex 状态管理库
 import store from "./store";
-// 引入 UI 组件库
-import "./plugins"
+// 引入 UI 组件库(按需加载引入)
+import "./plugins";
+// 引入 moment.js
+import moment from "moment";
+Vue.prototype.$moment = moment;
 
 Vue.config.productionTip = false;
 

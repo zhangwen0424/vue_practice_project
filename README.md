@@ -24,6 +24,35 @@ package.json 中加入下面代码后 cnpm i
     "sass-loader": "^7.3.1",
 ```
 
+### vue 集成 axios 之后，发送的 post 请求默认为 payload 方式
+
+Axios 会自动将对象转化为 json 格式的字符串使用 application/json 的请求头向后端服务接口传递参数。而一般情况下，后端获取参数，请求头的需要是 application/www-x-form-urlencoded
+
+一般 post 不允许发送复杂数据类型，比如 object 和 array，而 jquery 的 ajax 封装了这个方法，使得可以发送复杂数据格式，然而 vue 指定的 ajax 插件 axios 没有封装这样的功能.content-type 字段用于描述数据实体的类型，就是指定客户端要发送的数据类型
+
+post 请求中常见的 content-type 的值有四种
+
+- 1.application/x-www-form-urlencoded
+  最常见的 post 的数据类型，也是表单提交的数据类型，jquery 的 ajax 默认也是这个
+- 2.multipart/form-data
+  文件上传时要使用的数据类型
+- 3.application/json
+  json 格式的数据类型，也是 axios 的默认类型
+- 4.text/xml
+  现在这个很少用了，基本没见过
+
+axios 默认的数据类型为 application/json，一般后台不能接受到 post 的请求的信息体，就是因为不能正确识别 json 请求，只要修改一 下 content-type 就可以，
+
+```js
+headers: {
+'Content-Type': 'application/x-www-form-urlencoded', //指定消息格式
+}
+```
+
+### vue 项目启动 no such file or directory, scandir node-sass/vendor
+
+cnpm rebuild node-sass
+
 ## 项目启动
 
 @vue/cli 脚手架工具
@@ -318,4 +347,30 @@ router.beforeEach((to, from, next) => {
 });
 ```
 
-xhr 请求后端接口
+**引入 moment.js 日期插件**
+
+yarn add moment --save-dev
+main.js 中引入 moment.js
+
+```js
+import moment from "moment";
+Vue.prototype.$moment = moment;
+```
+
+**xhr 请求后端接口**
+
+跨域设置代理
+
+```js
+devServer: {
+    proxy: config.dev.proxyTable,
+}
+
+proxyTable: {
+      "/api": {
+        pathRewrite: { "^/api": "/" }, //请求路径是否需要重写，这里是指是否要去掉/api，放在前面才生效
+        target: "http://localhost:3000",
+        changeOrigin: true // 支持跨域,用于控制请求头中的host值
+      }
+  },
+```

@@ -1,14 +1,17 @@
 /*
  * @Date: 2022-02-22 13:13:42
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-22 16:37:37
+ * @LastEditTime: 2022-02-24 17:31:10
  * @FilePath: /vue_practice_project/src/store/modules/user.js
  */
 
 import Vuex from "vuex";
 import Vue from "vue";
+import moment from "moment";
 
 Vue.use(Vuex);
+
+import { $login } from "@/api";
 
 const state = {
   userList: {},
@@ -16,7 +19,16 @@ const state = {
   loginTime: ""
 };
 const getters = {};
-const actions = {};
+const actions = {
+  // 注册发送异步请求
+  a_register({ commit }, userInfo) {
+    userInfo.registerTime = moment().format("YYYY-MM-DD HH:mm:ss");
+    let result = $login.reqRegister(userInfo);
+    if (result.code == 0) {
+      commit(REGISTER, userInfo);
+    }
+  }
+};
 const mutations = {
   /**
    * 注册
@@ -26,7 +38,7 @@ const mutations = {
   REGISTER(state, obj) {
     state.userList[obj.account] = {
       password: obj.password,
-      registerTime: new Date().valueOf()
+      registerTime: moment().format("YYYY-MM-DD HH:mm:ss")
     };
   },
   /**
@@ -35,9 +47,11 @@ const mutations = {
    * @param {*} obj {account, password}
    */
   LOGIN(state, obj) {
-    state.loginUser = obj.account;
-    state.loginTime = new Date().valueOf();
-    state.userList[obj.account].lastLogin = state.loginTime;
+    if (state.userList[obj.account]) {
+      state.loginUser = obj.account;
+      state.loginTime = moment().format("YYYY-MM-DD HH:mm:ss");
+      state.userList[obj.account].lastLogin = state.loginTime;
+    }
   },
   /**
    * 登出
