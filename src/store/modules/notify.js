@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-02-22 11:23:56
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-22 14:20:30
+ * @LastEditTime: 2022-02-25 14:49:46
  * @FilePath: /vue_practice_project/src/store/modules/notify.js
  */
 import Vuex from "vuex";
@@ -33,6 +33,7 @@ const mutations = {
     setTimeout(() => {
       state.notifyShow = false;
     }, 3000);
+    return Promise.resolve();
   }
 };
 

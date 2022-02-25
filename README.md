@@ -374,3 +374,22 @@ proxyTable: {
       }
   },
 ```
+
+**vuex 中 action 中请求结果通知 vue**
+
+1. vuex 中 action 可以通过 this.\_vm 访问 vue 实例
+2. vuex 中 action 返回 Promise 对象，vm 中通过 then 获取结果。
+
+```js
+acitons = {
+  a_login() {
+    return Promise.resolve("处理结果");
+  }
+};
+method{
+  async login(){
+    let res = await this.a_login()
+    console.log(res);
+  }
+}
+```

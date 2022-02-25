@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-02-22 13:13:42
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-24 17:31:10
+ * @LastEditTime: 2022-02-25 15:09:56
  * @FilePath: /vue_practice_project/src/store/modules/user.js
  */
 
@@ -21,25 +21,38 @@ const state = {
 const getters = {};
 const actions = {
   // 注册发送异步请求
-  a_register({ commit }, userInfo) {
+  async a_register({ commit }, userInfo) {
     userInfo.registerTime = moment().format("YYYY-MM-DD HH:mm:ss");
-    let result = $login.reqRegister(userInfo);
+    let result = await $login.reqRegister(userInfo);
     if (result.code == 0) {
-      commit(REGISTER, userInfo);
+      // 更新用户清单 userList
+      let users = await $login.reqUserList();
+      users && commit("USERS", users);
+      return Promise.resolve({ code: 0, msg: "注册成功！" });
+    } else {
+      return Promise.resolve({ code: 1, msg: "注册失败！" });
+    }
+  },
+  // 登陆发送异步请求
+  async a_login({ commit }, userInfo) {
+    let res = await $login.reqLogin(userInfo);
+    if (res.code == 0) {
+      userInfo.loginTime = moment().format("YYYY-MM-DD HH:mm:ss");
+      commit("LOGIN", userInfo);
+      return Promise.resolve({ code: 0, msg: "登陆成功！" });
+    } else {
+      return Promise.resolve({ code: 1, msg: "登陆失败！" + res.msg });
     }
   }
 };
 const mutations = {
   /**
-   * 注册
+   * 获取用户列表数据
    * @param {*} state
-   * @param {*} obj {account, password}
+   * @param {*} userList
    */
-  REGISTER(state, obj) {
-    state.userList[obj.account] = {
-      password: obj.password,
-      registerTime: moment().format("YYYY-MM-DD HH:mm:ss")
-    };
+  USERS(state, userList) {
+    state.userList = userList;
   },
   /**
    * 登陆
@@ -47,11 +60,8 @@ const mutations = {
    * @param {*} obj {account, password}
    */
   LOGIN(state, obj) {
-    if (state.userList[obj.account]) {
-      state.loginUser = obj.account;
-      state.loginTime = moment().format("YYYY-MM-DD HH:mm:ss");
-      state.userList[obj.account].lastLogin = state.loginTime;
-    }
+    state.loginUser = obj.account;
+    state.loginTime = obj.loginTime;
   },
   /**
    * 登出

@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-10 17:12:18
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-24 14:31:14
+ * @LastEditTime: 2022-02-25 14:58:48
  * @FilePath: /vue_practice_project/src/pages/Login/Login.vue
 -->
 <template>
@@ -121,8 +121,7 @@ export default {
   },
   methods: {
     ...mapMutations("notify", ["SHOWNOTIFY"]),
-    ...mapActions("user", ["a_register"]),
-    ...mapMutations("user", ["REGISTER", "LOGIN"]),
+    ...mapActions("user", ["a_register", "a_login"]),
     // 选项栏切换
     tabSwitch(index) {
       // console.log("index", index);
@@ -141,7 +140,8 @@ export default {
           resolve("请输入密码！");
         }
         if (this.activedId == "register") {
-          if (!this.form.password) {
+          //注册
+          if (!this.form.confirmPassword) {
             resolve("请输入确认密码！");
           }
           if (this.form.password != this.confirmPassword) {
@@ -154,71 +154,36 @@ export default {
     // 处理登陆注册
     async handleClick() {
       let check = await this.checkClick();
-      let notify = {
-        notifyShow: true
-      };
-      if (!check) {
-        let res = await this[this.activedId]();
-        if (!res) {
-          Object.assign(notify, {
-            notifyType: "success",
-            notifyMsg: this.activedTitle + "成功!"
-          });
-          this.SHOWNOTIFY(notify);
-          // this.$store.commit("Common/SHOWNOTIFY", notify);
-          setTimeout(() => {
-            this.$router.replace({
-              path: "/" + (this.activedId == "login" ? "" : "login")
-            });
-            this.activedId == "register"
-              ? (this.$data.activedId = "login")
-              : "";
-          }, 2500);
-        } else {
-          Object.assign(notify, {
-            notifyType: "warning",
-            notifyMsg: res
-          });
-          this.SHOWNOTIFY(notify);
-          // this.$store.commit("Common/SHOWNOTIFY", notify);
-        }
-      } else {
-        Object.assign(notify, {
-          notifyType: "warning",
-          notifyMsg: check
-        });
-        this.SHOWNOTIFY(notify);
+      let notify = { notifyShow: true };
+
+      // 数据校验
+      if (check) {
+        await this.SHOWNOTIFY(
+          Object.assign(notify, { notifyType: "warning", notifyMsg: check })
+        );
+        return false;
       }
-    },
-    // 注册
-    register() {
-      return new Promise(async (resolve, reject) => {
-        // debugger;
-        // let result = $login.reqRegister(this.form);
-        await this.a_register(this.form);
-        // this.REGISTER(Object.assign({}, this.form));
-        // resolve();
-      });
-    },
-    // 登陆
-    login() {
-      return new Promise((resolve, reject) => {
-        // let user = localStorage.getItem(data.account);
-        let user = this.userList[this.form.account];
-        if (user) {
-          // user = JSON.parse(user);
-          if (user.password != this.form.password) {
-            resolve("密码输入错误！");
-          } else {
-            this.LOGIN(this.form);
-            // localStorage.setItem("loginUser", data.account);
-            // localStorage.setItem("loginTime", new Date().valueOf());
-            resolve();
-          }
-        } else {
-          resolve("用户未注册！");
-        }
-      });
+
+      // 数据提交
+      let res = await this["a_" + this.activedId](this.form);
+      await this.SHOWNOTIFY(
+        Object.assign(notify, {
+          notifyType: res.code ? "warning" : "success",
+          notifyMsg: res.msg
+        })
+      );
+      if (res.code) {
+        return false;
+      }
+
+      // 成功跳转
+      let timer = setTimeout(() => {
+        this.$router.replace({
+          path: "/" + (this.activedId == "login" ? "" : "login")
+        });
+        this.activedId == "register" ? (this.$data.activedId = "login") : "";
+        clearTimeout(timer);
+      }, 2500);
     }
   },
   mounted() {

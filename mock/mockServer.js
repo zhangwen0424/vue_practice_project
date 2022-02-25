@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-02-10 14:46:49
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-24 17:33:31
+ * @LastEditTime: 2022-02-25 15:07:47
  * @FilePath: /vue_practice_project/mock/mockServer.js
  */
 const express = require("express");
@@ -57,10 +57,10 @@ fs.readFile(Resolve(__dirname, "./dataJSON/config.json"), "utf-8", function(
   }
 });
 
+const users_path = Resolve(__dirname, "./dataJSON/user/list.json");
 // 注册用户
 app.post("/register", async (req, res) => {
   let { account } = req.body;
-  let users_path = Resolve(__dirname, "./dataJSON/user/list.json");
   let users = fs.readFileSync(users_path);
   users = JSON.parse(users);
   let user = users.find(u => u.account == account);
@@ -69,12 +69,22 @@ app.post("/register", async (req, res) => {
   } else {
     users.push(req.body);
   }
-  console.log("user", user);
-  fs.writeFileSync(users_path, JSON.stringify(user));
-  res.json({
-    code: 0,
-    data: req.body
-  });
+  fs.writeFileSync(users_path, JSON.stringify(users));
+  res.json({ code: 0, data: req.body });
+});
+// 登陆用户
+app.post("/login", async (req, res) => {
+  let { account, password } = req.body;
+  let users = fs.readFileSync(users_path);
+  users = JSON.parse(users);
+  let user = users.find(u => u.account == account);
+  if (!user) {
+    res.json({ code: 1, msg: "用户未注册!" });
+  }
+  if (user.password != password) {
+    res.json({ code: 1, msg: "用户密码输入错误!" });
+  }
+  res.json({ code: 0, data: req.body });
 });
 
 app.listen("3000");

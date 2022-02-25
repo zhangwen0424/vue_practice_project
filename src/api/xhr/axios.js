@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-02-17 14:39:22
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-24 17:36:37
+ * @LastEditTime: 2022-02-25 13:53:28
  * @FilePath: /vue_practice_project/src/api/xhr/axios.js
  */
 
@@ -48,8 +48,7 @@ xhr.interceptors.response.use(
      *  如果成功返回数据，就通过return把数据返出去
      *  如果请求不成功，就在拦截器这里统一处理（组件的代码就不用关注错误的情况了）
      */
-    console.log("");
-    return response;
+    return response.data;
   },
   error => {
     console.log("响应错误:", error);

@@ -4,7 +4,7 @@
     "path": "./test/test.json"
   },
   "user": {
-    "url": "/list",
+    "url": "/user/list",
     "path": "./user/list.json"
   }
 }
