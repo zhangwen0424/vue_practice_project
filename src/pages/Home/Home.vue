@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-02-10 16:53:19
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-22 16:51:33
+ * @LastEditTime: 2022-02-25 15:31:08
  * @FilePath: /vue_practice_project/src/pages/Home/Home.vue
 -->
 <template>
@@ -23,6 +23,29 @@
         </router-link>
       </template>
     </HeaderTop>
+
+    <nut-row>
+      <nut-swiper
+        direction="horizontal"
+        :loop="false"
+        :autoPlay="2000"
+        :paginationVisible="true"
+        :swiperData="swiperData"
+      >
+        <div class="nut-swiper-slide gray">
+          <span>page 1</span>
+        </div>
+        <div class="nut-swiper-slide gray_1">
+          <span>page 2</span>
+        </div>
+        <div class="nut-swiper-slide gray">
+          <span>page 3</span>
+        </div>
+        <div class="nut-swiper-slide gray_1">
+          <span>page 4</span>
+        </div></nut-swiper
+      >
+    </nut-row>
   </div>
 </template>
 
@@ -34,6 +57,7 @@ export default {
   name: "Home",
   data() {
     return {
+      category: [],
       // loginUser: ""
       // loginUser: this.$route.meta.loginUser || ""
     };
@@ -43,18 +67,7 @@ export default {
   },
   components: { HeaderTop },
   methods: {},
-  mounted() {
-    // console.log(this);
-    // this.loginUser = this.$route.meta.loginUser || "";
-    // let user = localStorage.getItem("loginUser");
-    // let time = localStorage.getItem("loginTime");
-    // let now = new Date().valueOf();
-    // if (!user || now - time > 10 * 1000) {
-    //   this.loginUser = user;
-    // } else {
-    //   this.loginUser = "";
-    // }
-  }
+  mounted() {}
 };
 </script>
 

@@ -12,7 +12,8 @@ import {
   Notify,
   Avatar,
   Cell,
-  Icon
+  Icon,
+  Swiper
 } from "@nutui/nutui";
 Button.install(Vue);
 Row.install(Vue);
@@ -24,3 +25,4 @@ Notify.install(Vue);
 Avatar.install(Vue);
 Cell.install(Vue);
 Icon.install(Vue);
+Swiper.install(Vue);

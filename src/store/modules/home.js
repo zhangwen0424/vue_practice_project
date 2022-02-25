@@ -1,7 +1,7 @@
 /*
  * @Date: 2022-02-24 13:52:03
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-24 13:53:17
+ * @LastEditTime: 2022-02-25 15:59:13
  * @FilePath: /vue_practice_project/src/store/modules/home.js
  */
 const state = {
