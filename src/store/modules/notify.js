@@ -1,7 +1,8 @@
 /*
+ * 顶部提示栏
  * @Date: 2022-02-22 11:23:56
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-25 14:49:46
+ * @LastEditTime: 2022-03-06 14:25:14
  * @FilePath: /vue_practice_project/src/store/modules/notify.js
  */
 import Vuex from "vuex";

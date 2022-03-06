@@ -10,8 +10,8 @@ import store from "./store";
 // 引入 UI 组件库(按需加载引入)
 import "./plugins";
 // 引入 moment.js
-import moment from "moment";
-Vue.prototype.$moment = moment;
+// import moment from "moment";
+// Vue.prototype.$moment = moment;
 
 Vue.config.productionTip = false;
 

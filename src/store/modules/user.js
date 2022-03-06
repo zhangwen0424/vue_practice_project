@@ -1,13 +1,14 @@
 /*
+ * 登陆用户
  * @Date: 2022-02-22 13:13:42
  * @LastEditors: zhangwen
- * @LastEditTime: 2022-02-25 15:09:56
+ * @LastEditTime: 2022-03-06 14:25:42
  * @FilePath: /vue_practice_project/src/store/modules/user.js
  */
 
 import Vuex from "vuex";
 import Vue from "vue";
-import moment from "moment";
+import * as dayjs from "dayjs";
 
 Vue.use(Vuex);
 
@@ -22,7 +23,7 @@ const getters = {};
 const actions = {
   // 注册发送异步请求
   async a_register({ commit }, userInfo) {
-    userInfo.registerTime = moment().format("YYYY-MM-DD HH:mm:ss");
+    userInfo.registerTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
     let result = await $login.reqRegister(userInfo);
     if (result.code == 0) {
       // 更新用户清单 userList
@@ -37,7 +38,7 @@ const actions = {
   async a_login({ commit }, userInfo) {
     let res = await $login.reqLogin(userInfo);
     if (res.code == 0) {
-      userInfo.loginTime = moment().format("YYYY-MM-DD HH:mm:ss");
+      userInfo.loginTime = dayjs().format("YYYY-MM-DD HH:mm:ss");
       commit("LOGIN", userInfo);
       return Promise.resolve({ code: 0, msg: "登陆成功！" });
     } else {

@@ -197,6 +197,81 @@ nodemon.json
 }
 ```
 
+### 性能分析工具 webpack-bundle-analyzer
+
+#### 安装
+
+npm install webpack-bundle-analyzer –save-dev
+
+#### 配置
+
+//在 build/webpack.prod.config.js 中的 module.exports = webpackConfig 这句话的上面增加
+
+```js
+if (config.build.bundleAnalyzerReport) {
+  const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+    .BundleAnalyzerPlugin;
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
+}
+
+// 该插件的默认配置，一般无需修改
+
+new BundleAnalyzerPlugin({
+  // 可以是`server`，`static`或`disabled`。
+  // 在`server`模式下，分析器将启动 HTTP 服务器来显示软件包报告。
+  // 在“静态”模式下，会生成带有报告的单个 HTML 文件。
+  // 在`disabled`模式下，你可以使用这个插件来将`generateStatsFile`设置为`true`来生成 Webpack Stats JSON 文件。
+  analyzerMode: "server",
+  // 将在“服务器”模式下使用的主机启动 HTTP 服务器。
+  analyzerHost: "127.0.0.1",
+  // 将在“服务器”模式下使用的端口启动 HTTP 服务器。
+  analyzerPort: 8888,
+  // 路径捆绑，将在`static`模式下生成的报告文件。
+  // 相对于捆绑输出目录。
+  reportFilename: "report.html",
+  // 模块大小默认显示在报告中。
+  // 应该是`stat`，`parsed`或者`gzip`中的一个。
+  // 有关更多信息，请参见“定义”一节。
+  defaultSizes: "parsed",
+  // 在默认浏览器中自动打开报告
+  openAnalyzer: true,
+  // 如果为 true，则 Webpack Stats JSON 文件将在 bundle 输出目录中生成
+  generateStatsFile: false,
+  // 如果`generateStatsFile`为`true`，将会生成 Webpack Stats JSON 文件的名字。
+  // 相对于捆绑输出目录。
+  statsFilename: "stats.json",
+  // stats.toJson（）方法的选项。
+  // 例如，您可以使用`source：false`选项排除统计文件中模块的来源。
+  // 在这里查看更多选项：https： //github.com/webpack/webpack/blob/webpack-1/lib/Stats.js#L21
+  statsOptions: null,
+  logLevel: "info" // 日志级别。可以是'信息'，'警告'，'错误'或'沉默'。
+});
+```
+
+#### 启动
+
+npm run build --report
+
+### vuex 中模块自动导入工具
+
+利用 webpack 中的 require.context
+
+语法: require.context(directory, useSubdirectories = false, regExp = /^.//);
+
+- directory {String} -读取文件的路径
+- useSubdirectories {Boolean} -是否遍历文件的子目录
+- regExp {RegExp} -匹配文件的正则
+
+```js
+// 前端 vuex 中的 modules 自动导入
+const files = require.context("./modules", false, /\.js\$/);
+const modules = {};
+files.keys().forEach(key => {
+  files(key).default &&
+    (modules[key.replace(/(\.\/|\.js)/g, "")] = files(key).default);
+});
+```
+
 ## 项目开发流程
 
 ### 页面拆分
@@ -348,7 +423,6 @@ router.beforeEach((to, from, next) => {
 ```
 
 **引入 moment.js 日期插件**
-
 yarn add moment --save-dev
 main.js 中引入 moment.js
 
@@ -357,8 +431,11 @@ import moment from "moment";
 Vue.prototype.$moment = moment;
 ```
 
-**xhr 请求后端接口**
+**引入 dayjs 日期插件**
+大小只有 2kb，相比较与 moment.js 更轻量
+yarn add dayjs -D
 
+**xhr 请求后端接口**
 跨域设置代理
 
 ```js
